@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="WC26 Predictions">
+<meta name="theme-color" content="#0A1310">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230A1310'/%3E%3Ccircle cx='50' cy='50' r='32' fill='none' stroke='%2322C55E' stroke-width='4'/%3E%3Ctext x='50' y='60' font-family='Georgia,serif' font-size='34' font-weight='700' fill='%2322C55E' text-anchor='middle'%3EWC%3C/text%3E%3C/svg%3E">
+<title>who calls it best? &middot; wc26 ai prediction league</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Titillium+Web:wght@400;600;700&family=Teko:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0A1310; --surface:#11201B; --surface-2:#16241E;
+    --line:#1F2F27; --line-strong:#2C4235;
+    --turf:#22C55E; --gold:#D9B44A; --miss:#C4573F;
+    --ink:#EDF3EE; --ink-dim:#93A79C;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{background:var(--bg);color:var(--ink);font-family:'Titillium Web',sans-serif;-webkit-font-smoothing:antialiased;}
+  button,input{font-family:inherit;}
+  img{max-width:none;}
+
+  .wrap{max-width:760px;margin:0 auto;padding:28px 16px 48px;}
+  @media(min-width:640px){.wrap{padding:40px 24px 56px;}}
+
+  .eyebrow{font-size:13px;letter-spacing:0.16em;text-transform:uppercase;color:var(--turf);margin-bottom:6px;font-weight:700;}
+  .title{font-family:'Bebas Neue',sans-serif;font-size:42px;line-height:1;letter-spacing:0.01em;margin:0 0 10px;color:var(--ink);}
+  @media(min-width:640px){.title{font-size:56px;}}
+  .subtitle{font-size:16px;color:var(--ink-dim);max-width:440px;margin:0 0 20px;line-height:1.45;}
+
+  /* sync panel */
+  .sync-panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:22px;display:flex;flex-direction:column;gap:8px;}
+  .sync-status{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--ink-dim);}
+  .sync-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+  .sync-code-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13px;}
+  .sync-code-label{color:var(--ink-dim);}
+  .sync-code{font-family:'Teko',sans-serif;font-size:16px;font-weight:600;letter-spacing:0.03em;background:var(--surface-2);padding:3px 8px;border-radius:5px;color:var(--ink);word-break:break-all;}
+  .qr-img{border-radius:8px;margin-top:2px;background:#fff;padding:6px;}
+  .sync-hint{font-size:12px;color:var(--ink-dim);opacity:0.8;line-height:1.4;}
+
+  .tabs{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:24px;}
+  .tab{font-weight:600;font-size:14px;padding:9px 15px;border-radius:999px;background:transparent;color:var(--ink-dim);border:1px solid var(--line-strong);cursor:pointer;}
+  .tab.active{background:var(--turf);color:#06210F;border-color:var(--turf);}
+  .tab-add{width:34px;height:34px;border-radius:999px;border:1px solid var(--line-strong);background:transparent;color:var(--ink-dim);display:flex;align-items:center;justify-content:center;cursor:pointer;}
+  .round-tools{display:flex;gap:14px;margin:-14px 0 20px;flex-wrap:wrap;}
+  .round-tools .reset-link{padding:2px 0;opacity:0.6;}
+
+  .section{position:relative;margin-bottom:32px;}
+  .center-circle{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;}
+  .center-circle::before{content:'';width:340px;height:340px;border-radius:50%;border:2px solid var(--turf);opacity:0.05;}
+  .section-label{font-size:13px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:12px;position:relative;font-weight:700;}
+  .progress-note{text-transform:none;letter-spacing:normal;font-weight:400;opacity:0.75;}
+
+  .board{position:relative;display:grid;grid-template-columns:1fr;gap:12px;}
+  @media(min-width:480px){.board{grid-template-columns:repeat(2,1fr);}}
+  @media(min-width:640px){.board{grid-template-columns:repeat(4,1fr);}}
+
+  .lb-card{position:relative;overflow:hidden;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px;}
+  .lb-card.top{border-color:var(--gold);box-shadow:0 0 0 1px rgba(217,180,74,0.15),0 8px 24px -12px rgba(217,180,74,0.35);}
+
+  .corner-arc{position:absolute;width:20px;height:20px;pointer-events:none;opacity:0.4;}
+  .corner-arc.tl{top:-1px;left:-1px;border-top:2px solid var(--line-strong);border-left:2px solid var(--line-strong);border-top-left-radius:100%;}
+  .corner-arc.br{bottom:-1px;right:-1px;border-bottom:2px solid var(--line-strong);border-right:2px solid var(--line-strong);border-bottom-right-radius:100%;}
+  .corner-arc.gold{border-color:var(--gold);}
+
+  .lb-top-row{display:flex;align-items:center;justify-content:space-between;}
+  .lb-rank{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--ink-dim);letter-spacing:0.03em;}
+  .lb-rank.gold{color:var(--gold);}
+  .lb-name-row{display:flex;align-items:center;gap:8px;}
+  .dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;display:inline-block;}
+  .lb-name{font-size:16px;font-weight:700;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .lb-points{display:flex;align-items:baseline;gap:4px;}
+  .lb-points-num{font-family:'Teko',sans-serif;font-weight:700;font-size:38px;color:var(--ink);line-height:1;}
+  .lb-points-label{font-size:13px;color:var(--ink-dim);}
+  .lb-stats{display:flex;gap:12px;flex-wrap:wrap;font-size:13px;color:var(--ink-dim);}
+  .s-exact{color:var(--turf);font-weight:700;}
+  .s-adv{color:var(--gold);font-weight:700;}
+  .s-miss{color:var(--miss);font-weight:700;}
+
+  .matches{display:flex;flex-direction:column;gap:12px;}
+  .match-card{position:relative;overflow:hidden;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;}
+  .match-head{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+  .team{display:flex;align-items:center;gap:8px;min-width:0;flex:1 1 0;}
+  .team.right{justify-content:flex-end;}
+
+  .flag-img{height:40px;width:auto;max-width:64px;object-fit:cover;border-radius:4px;border:1px solid var(--line-strong);flex-shrink:0;display:block;}
+  .flag-fallback{height:40px;min-width:44px;padding:0 8px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-family:'Teko',sans-serif;font-size:13px;font-weight:700;flex-shrink:0;}
+
+  .team-text{display:flex;flex-direction:column;line-height:1.2;min-width:0;}
+  .team-text.right{align-items:flex-end;text-align:right;}
+  .team-code{font-family:'Teko',sans-serif;font-weight:700;font-size:19px;color:var(--ink);letter-spacing:0.02em;}
+  .team-name{font-size:12px;color:var(--ink-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90px;}
+  @media(min-width:480px){.team-name{max-width:110px;}}
+
+  .score-btn{display:flex;align-items:center;gap:6px;background:transparent;border:none;cursor:pointer;padding:8px 10px;border-radius:8px;flex-shrink:0;color:var(--ink-dim);}
+  .score-btn:hover{background:var(--surface-2);}
+  .score-display{font-family:'Teko',sans-serif;font-weight:700;font-size:24px;color:var(--ink);white-space:nowrap;}
+  .score-display.muted{color:var(--ink-dim);opacity:0.6;}
+
+  .match-meta{font-size:12.5px;color:var(--ink-dim);}
+  .match-meta-row{display:flex;align-items:center;justify-content:center;gap:6px;margin:8px 0;position:relative;}
+  .match-meta-row .edit-btn{position:absolute;right:0;padding:4px;opacity:0.5;}
+  .match-meta-row .edit-btn:hover{opacity:1;}
+  .hr-dash{border-top:1px dashed var(--line-strong);margin-bottom:4px;}
+
+  .pred-list{display:flex;flex-direction:column;}
+  .pred-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-top:1px solid var(--line);gap:10px;}
+  .pred-row:first-child{border-top:none;}
+  .pred-row.editing{flex-direction:column;align-items:stretch;gap:8px;}
+  .pred-model-label{display:flex;align-items:center;gap:8px;min-width:0;}
+  .pred-model-label span:last-child{font-size:14px;font-weight:600;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .pred-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+  .pred-score{font-family:'Teko',sans-serif;font-size:16px;color:var(--ink-dim);white-space:nowrap;}
+
+  .chip{font-size:12.5px;font-weight:700;padding:3px 9px;border-radius:999px;white-space:nowrap;}
+  .chip-3{background:var(--turf);color:#06210F;}
+  .chip-1{background:var(--gold);color:#2A1F00;}
+  .chip-0{background:var(--miss);color:#2A0E08;}
+  .chip-pending{border:1px dashed var(--line-strong);color:var(--ink-dim);}
+
+  .edit-btn{background:transparent;border:none;cursor:pointer;color:var(--ink-dim);padding:8px;border-radius:8px;display:flex;}
+  .edit-btn:hover{background:var(--surface-2);}
+
+  .score-form{display:flex;flex-direction:column;gap:8px;background:var(--surface-2);border:1px solid var(--line-strong);border-radius:10px;padding:12px;}
+  .score-inputs{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .score-input{width:52px;text-align:center;padding:8px 4px;border-radius:6px;background:var(--bg);color:var(--ink);border:1px solid var(--line-strong);font-family:'Teko',sans-serif;font-size:17px;}
+  .score-input.shake{animation:shake 0.4s;border-color:var(--miss);}
+  .score-input-label{font-size:12px;color:var(--ink-dim);}
+  .dash{color:var(--ink-dim);}
+
+  .pk-row{align-items:center;gap:8px;font-size:12.5px;flex-wrap:wrap;display:flex;}
+  .pk-label{color:var(--ink-dim);}
+  .pk-btn{padding:7px 12px;border-radius:6px;background:var(--bg);color:var(--ink-dim);border:1px solid var(--line-strong);cursor:pointer;font-size:13px;}
+  .pk-btn.selected{background:var(--accent);color:#111;border-color:var(--accent);}
+
+  .form-actions{display:flex;gap:8px;}
+  .btn-primary-sm{display:flex;align-items:center;gap:5px;background:var(--turf);color:#06210F;border:none;padding:8px 14px;border-radius:7px;font-weight:700;font-size:13px;cursor:pointer;}
+  .btn-ghost-sm{display:flex;align-items:center;gap:5px;background:transparent;color:var(--ink-dim);border:1px solid var(--line-strong);padding:8px 14px;border-radius:7px;font-size:13px;cursor:pointer;}
+  .btn-danger-sm{background:var(--miss);color:#2A0E08;border:none;padding:7px 12px;border-radius:7px;font-size:12px;cursor:pointer;}
+
+  .empty{text-align:center;padding:32px;border:1px dashed var(--line-strong);border-radius:14px;color:var(--ink-dim);font-size:14px;}
+
+  .add-match-wrap{margin-top:12px;}
+  .add-match-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:6px;padding:12px;border-radius:10px;border:1px dashed var(--line-strong);background:transparent;color:var(--ink-dim);cursor:pointer;font-size:13px;font-weight:600;}
+
+  .inline-form{background:var(--surface-2);border:1px solid var(--line-strong);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px;}
+  .round-form{flex-direction:row;align-items:center;flex-wrap:wrap;}
+  .match-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .text-input{padding:9px;border-radius:6px;background:var(--bg);color:var(--ink);border:1px solid var(--line-strong);font-size:14px;}
+
+  .footer{margin-top:36px;padding-top:20px;border-top:1px solid var(--line);display:flex;justify-content:center;}
+  .reset-link{background:none;border:none;color:var(--ink-dim);opacity:0.7;font-size:12.5px;cursor:pointer;padding:6px;}
+  .reset-confirm{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ink-dim);flex-wrap:wrap;justify-content:center;}
+
+  button:focus-visible, input:focus-visible{outline:2px solid var(--turf);outline-offset:2px;}
+
+  @keyframes shake{10%,90%{transform:translateX(-1px);}20%,80%{transform:translateX(2px);}30%,50%,70%{transform:translateX(-3px);}40%,60%{transform:translateX(3px);}}
+  .shake{animation:shake 0.4s;}
+
+  @media(prefers-reduced-motion:reduce){*{animation-duration:0.01ms !important;transition-duration:0.01ms !important;}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+const STORAGE_KEY = 'wc26-prediction-league-v1';
+
+const MODELS = [
+  { id:'sonnet', name:'Sonnet 5', color:'#E8944A' },
+  { id:'opus', name:'Opus 4.8', color:'#9B6FD1' },
+  { id:'fable', name:'Fable 5', color:'#2FB6A6' },
+  { id:'haiku', name:'Haiku 4.5', color:'#D97C93' },
+];
+
+const FLAG_ISO = {
+  ESP:'es', AUT:'at', POR:'pt', CRO:'hr', SUI:'ch', DZA:'dz',
+  AUS:'au', EGY:'eg', ARG:'ar', CPV:'cv', COL:'co', GHA:'gh',
+};
+
+const TEAM_COLORS = {
+  ESP:'#C60B1E', AUT:'#ED2939', POR:'#046A38', CRO:'#E01B22',
+  SUI:'#D52B1E', DZA:'#006233', AUS:'#00843D', EGY:'#CE1126',
+  ARG:'#75AADB', CPV:'#003893', COL:'#FCD116', GHA:'#CE1126',
+};
+
+const initialMatches = [
+  { id:'esp-aut', teamA:{code:'ESP',name:'Spain'}, teamB:{code:'AUT',name:'Austria'}, venue:'Los Angeles', kickoff:'Jul 2 · 3:00pm ET', actual:null, predictions:{} },
+  { id:'por-cro', teamA:{code:'POR',name:'Portugal'}, teamB:{code:'CRO',name:'Croatia'}, venue:'Toronto', kickoff:'Jul 2 · 7:00pm ET', actual:null, predictions:{} },
+  { id:'sui-dza', teamA:{code:'SUI',name:'Switzerland'}, teamB:{code:'DZA',name:'Algeria'}, venue:'Vancouver', kickoff:'Jul 2 · 11:00pm ET', actual:null, predictions:{} },
+  { id:'aus-egy', teamA:{code:'AUS',name:'Australia'}, teamB:{code:'EGY',name:'Egypt'}, venue:'Arlington', kickoff:'Jul 3 · 2:00pm ET', actual:null, predictions:{} },
+  { id:'arg-cpv', teamA:{code:'ARG',name:'Argentina'}, teamB:{code:'CPV',name:'Cape Verde'}, venue:'Miami Gardens', kickoff:'Jul 3 · 6:00pm ET', actual:null, predictions:{} },
+  { id:'col-gha', teamA:{code:'COL',name:'Colombia'}, teamB:{code:'GHA',name:'Ghana'}, venue:'Kansas City', kickoff:'Jul 3 · 9:30pm ET', actual:null, predictions:{} },
+];
+
+const defaultState = {
+  activeRound: 'ro32',
+  rounds: [{ id:'ro32', name:'Round of 32', matches: initialMatches }],
+  customFlags: {},
+};
+
+const GH_API = 'https://api.github.com';
+const GH_TOKEN_KEY = 'wc26-gh-token';
+const GH_GIST_KEY = 'wc26-gh-gist-id';
+const GIST_MARKER = 'wc26-prediction-league-data (auto-managed by tracker — do not edit by hand)';
+const GIST_FILENAME = 'wc26-data.json';
+
+let state = loadLocalState();
+let uiOpen = { addingRound:false, addingMatch:false, resetConfirm:false, formOpen:null, importing:false, connectingGithub:false, deletingRound:null };
+let ghToken = localStorage.getItem(GH_TOKEN_KEY) || '';
+let gistId = localStorage.getItem(GH_GIST_KEY) || '';
+let syncState = ghToken ? 'checking' : 'off'; // off | checking | synced | error
+
+function loadLocalState(){
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch (e) {}
+  return JSON.parse(JSON.stringify(defaultState));
+}
+function saveLocalOnly(){
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { console.error('local save failed', e); }
+}
+function saveState(){
+  saveLocalOnly();
+  if (ghToken && gistId) pushToGist();
+}
+
+// ---- scoring ----
+function computePoints(pred, actual) {
+  if (!pred || !actual) return null;
+  if (pred.scoreA === actual.scoreA && pred.scoreB === actual.scoreB) return 3;
+  if (pred.advancer === actual.advancer) return 1;
+  return 0;
+}
+function textColorFor(hex) {
+  const c = hex.replace('#', '');
+  const r = parseInt(c.substring(0,2),16), g = parseInt(c.substring(2,4),16), b = parseInt(c.substring(4,6),16);
+  const lum = (0.299*r + 0.587*g + 0.114*b) / 255;
+  return lum > 0.6 ? '#161616' : '#ffffff';
+}
+function formatScoreLabel(entry, match) {
+  if (!entry) return null;
+  const base = `${entry.scoreA}\u2013${entry.scoreB}`;
+  if (entry.scoreA === entry.scoreB) {
+    const advCode = entry.advancer === 'A' ? match.teamA.code : match.teamB.code;
+    return `${base} (${advCode} pens)`;
+  }
+  return base;
+}
+function computeStandings(rounds) {
+  const totals = {};
+  MODELS.forEach((m) => (totals[m.id] = { points:0, exact:0, advancer:0, miss:0, pending:0 }));
+  rounds.forEach((r) => {
+    r.matches.forEach((m) => {
+      MODELS.forEach((model) => {
+        const pred = m.predictions[model.id];
+        const pts = computePoints(pred, m.actual);
+        if (pts === null) totals[model.id].pending++;
+        else if (pts === 3) { totals[model.id].points += 3; totals[model.id].exact++; }
+        else if (pts === 1) { totals[model.id].points += 1; totals[model.id].advancer++; }
+        else totals[model.id].miss++;
+      });
+    });
+  });
+  return MODELS.map((m) => ({ ...m, ...totals[m.id] })).sort((a, b) => b.points - a.points);
+}
+function roundProgress(round){
+  const total = round.matches.length;
+  const graded = round.matches.filter(m => m.actual).length;
+  return { total, graded };
+}
+function escapeHtml(str){
+  return String(str == null ? '' : str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function flagUrl(code){
+  const iso = FLAG_ISO[code] || (state.customFlags && state.customFlags[code]);
+  return iso ? `https://flagcdn.com/w80/${iso}.png` : null;
+}
+function val(id){ const el = document.getElementById(id); return el ? el.value.trim() : ''; }
+function copyText(text){
+  if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(text);
+  return new Promise((resolve, reject) => {
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = text; ta.style.position = 'fixed'; ta.style.left = '-9999px';
+      document.body.appendChild(ta); ta.focus(); ta.select();
+      const ok = document.execCommand('copy');
+      document.body.removeChild(ta);
+      ok ? resolve() : reject(new Error('copy failed'));
+    } catch (e) { reject(e); }
+  });
+}
+
+// ---- icons ----
+function iconPlus(s){return `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>`;}
+function iconCheck(s){return `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 9 17 20 6"/></svg>`;}
+function iconX(s){return `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>`;}
+function iconPencil(s){return `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l4-1 11-11-3-3L5 16l-1 4z"/><path d="M14 6l3 3"/></svg>`;}
+function iconTrophy(s,color){return `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v5a4 4 0 0 1-8 0V4z"/><path d="M8 5H4v2a4 4 0 0 0 4 4"/><path d="M16 5h4v2a4 4 0 0 1-4 4"/><line x1="12" y1="15" x2="12" y2="19"/><line x1="9" y1="19" x2="15" y2="19"/></svg>`;}
+
+// ---- render pieces ----
+function renderFlag(code){
+  const url = flagUrl(code);
+  if (url) {
+    return `<img src="${url}" alt="${escapeHtml(code)} flag" class="flag-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" /><div class="flag-fallback" style="display:none;background:${TEAM_COLORS[code]||'#3A4A42'};color:${textColorFor(TEAM_COLORS[code]||'#3A4A42')};">${escapeHtml(code)}</div>`;
+  }
+  const bg = TEAM_COLORS[code] || '#3A4A42';
+  const fg = textColorFor(bg);
+  return `<div class="flag-fallback" style="background:${bg};color:${fg};">${escapeHtml(code)}</div>`;
+}
+function renderTeamText(team, align){
+  return `<div class="team-text ${align==='right'?'right':''}"><div class="team-code">${escapeHtml(team.code)}</div><div class="team-name">${escapeHtml(team.name)}</div></div>`;
+}
+function renderChip(points){
+  if (points === null) return `<span class="chip chip-pending">pending</span>`;
+  if (points === 3) return `<span class="chip chip-3">+3 exact</span>`;
+  if (points === 1) return `<span class="chip chip-1">+1 adv</span>`;
+  return `<span class="chip chip-0">0</span>`;
+}
+function renderScoreDisplay(matchId, actual, teamA, teamB){
+  const label = actual ? formatScoreLabel(actual, { teamA, teamB }) : '\u2013 : \u2013';
+  return `<button class="score-btn" data-action="edit-actual" data-match-id="${matchId}" aria-label="set actual result for ${escapeHtml(teamA.name)} vs ${escapeHtml(teamB.name)}">
+    <span class="score-display ${actual?'':'muted'}">${label}</span>${iconPencil(13)}
+  </button>`;
+}
+function renderScoreForm(kind, matchId, modelId, teamA, teamB, initial, accent){
+  const isDrawInitial = initial && initial.scoreA === initial.scoreB;
+  return `
+  <div class="score-form">
+    <div class="score-inputs">
+      <input id="sf-a" type="number" min="0" inputmode="numeric" class="score-input" value="${initial?initial.scoreA:''}" aria-label="${escapeHtml(teamA.code)} score" />
+      <span class="score-input-label">${escapeHtml(teamA.code)}</span>
+      <span class="dash">&ndash;</span>
+      <span class="score-input-label">${escapeHtml(teamB.code)}</span>
+      <input id="sf-b" type="number" min="0" inputmode="numeric" class="score-input" value="${initial?initial.scoreB:''}" aria-label="${escapeHtml(teamB.code)} score" />
+    </div>
+    <div id="sf-pk" class="pk-row" style="display:${isDrawInitial?'flex':'none'};" data-selected="${isDrawInitial?initial.advancer:''}">
+      <span class="pk-label">advances on pens:</span>
+      <button type="button" class="pk-btn ${isDrawInitial&&initial.advancer==='A'?'selected':''}" data-pk-side="A" style="--accent:${accent}">${escapeHtml(teamA.code)}</button>
+      <button type="button" class="pk-btn ${isDrawInitial&&initial.advancer==='B'?'selected':''}" data-pk-side="B" style="--accent:${accent}">${escapeHtml(teamB.code)}</button>
+    </div>
+    <div class="form-actions">
+      <button class="btn-primary-sm" data-action="save-score" data-kind="${kind}" data-match-id="${matchId}" ${modelId?`data-model-id="${modelId}"`:''}>${iconCheck(13)} save</button>
+      <button class="btn-ghost-sm" data-action="cancel-score">${iconX(13)} cancel</button>
+    </div>
+  </div>`;
+}
+function renderLeaderboardCard(model, rank){
+  const isTop = rank === 1;
+  return `
+  <div class="lb-card ${isTop?'top':''}">
+    <div class="corner-arc tl ${isTop?'gold':''}"></div>
+    <div class="lb-top-row">
+      <span class="lb-rank ${isTop?'gold':''}">${String(rank).padStart(2,'0')}</span>
+      ${isTop?iconTrophy(16,'var(--gold)'):''}
+    </div>
+    <div class="lb-name-row"><span class="dot" style="background:${model.color}"></span><span class="lb-name">${escapeHtml(model.name)}</span></div>
+    <div class="lb-points"><span class="lb-points-num">${model.points}</span><span class="lb-points-label">pts</span></div>
+    <div class="lb-stats">
+      <span><span class="s-exact">${model.exact}</span> exact</span>
+      <span><span class="s-adv">${model.advancer}</span> adv</span>
+      <span><span class="s-miss">${model.miss}</span> miss</span>
+      ${model.pending>0?`<span>${model.pending} pending</span>`:''}
+    </div>
+  </div>`;
+}
+function renderPredictionRow(model, match){
+  const f = uiOpen.formOpen;
+  const isEditing = f && f.kind==='prediction' && f.matchId===match.id && f.modelId===model.id;
+  const pred = match.predictions[model.id];
+  const points = computePoints(pred, match.actual);
+  if (isEditing) {
+    return `<div class="pred-row editing">
+      <div class="pred-model-label"><span class="dot" style="background:${model.color}"></span><span>${escapeHtml(model.name)}</span></div>
+      ${renderScoreForm('prediction', match.id, model.id, match.teamA, match.teamB, pred, model.color)}
+    </div>`;
+  }
+  return `<div class="pred-row">
+    <div class="pred-model-label"><span class="dot" style="background:${model.color}"></span><span>${escapeHtml(model.name)}</span></div>
+    <div class="pred-right">
+      <span class="pred-score">${pred ? formatScoreLabel(pred, match) : '&mdash;'}</span>
+      ${renderChip(points)}
+      <button class="edit-btn" data-action="edit-prediction" data-match-id="${match.id}" data-model-id="${model.id}" aria-label="edit ${escapeHtml(model.name)} prediction">${iconPencil(13)}</button>
+    </div>
+  </div>`;
+}
+function renderMatchCard(match, roundId){
+  const f = uiOpen.formOpen;
+  const isEditingActual = f && f.kind==='actual' && f.matchId===match.id;
+  return `
+  <div class="match-card">
+    <div class="corner-arc tl"></div>
+    <div class="corner-arc br"></div>
+    <div class="match-head">
+      <div class="team">${renderFlag(match.teamA.code)}${renderTeamText(match.teamA,'left')}</div>
+      ${isEditingActual
+        ? renderScoreForm('actual', match.id, null, match.teamA, match.teamB, match.actual, 'var(--turf)')
+        : renderScoreDisplay(match.id, match.actual, match.teamA, match.teamB)}
+      <div class="team right">${renderTeamText(match.teamB,'right')}${renderFlag(match.teamB.code)}</div>
+    </div>
+    <div class="match-meta-row">
+      <span class="match-meta">${escapeHtml(match.venue||'')}${match.venue&&match.kickoff?' &middot; ':''}${escapeHtml(match.kickoff||'')}</span>
+      <button class="edit-btn" data-action="delete-match" data-round-id="${roundId}" data-match-id="${match.id}" aria-label="delete match">${iconX(12)}</button>
+    </div>
+    <div class="hr-dash"></div>
+    <div class="pred-list">${MODELS.map(model => renderPredictionRow(model, match)).join('')}</div>
+  </div>`;
+}
+function renderAddRoundForm(){
+  return `<div class="inline-form round-form">
+    <input id="add-round-input" type="text" placeholder="e.g. Round of 16" class="text-input" aria-label="new round name" />
+    <button class="btn-primary-sm" data-action="submit-add-round">add</button>
+    <button class="btn-ghost-sm" data-action="cancel-add-round">cancel</button>
+  </div>`;
+}
+function renderAddMatchForm(roundId){
+  return `<div class="inline-form">
+    <div class="match-form-grid">
+      <input id="am-a-name" type="text" placeholder="Team A name" class="text-input" aria-label="team A name" />
+      <input id="am-a-code" type="text" placeholder="Code (e.g. ESP)" class="text-input" maxlength="3" aria-label="team A code" />
+      <input id="am-a-iso" type="text" placeholder="Flag code (iso2, e.g. es) optional" class="text-input" maxlength="2" aria-label="team A flag iso code" />
+      <input id="am-b-name" type="text" placeholder="Team B name" class="text-input" aria-label="team B name" />
+      <input id="am-b-code" type="text" placeholder="Code (e.g. AUT)" class="text-input" maxlength="3" aria-label="team B code" />
+      <input id="am-b-iso" type="text" placeholder="Flag code (iso2, e.g. at) optional" class="text-input" maxlength="2" aria-label="team B flag iso code" />
+      <input id="am-venue" type="text" placeholder="Venue (optional)" class="text-input" aria-label="venue" />
+      <input id="am-kickoff" type="text" placeholder="Kickoff (optional)" class="text-input" aria-label="kickoff time" />
+    </div>
+    <div class="form-actions">
+      <button class="btn-primary-sm" data-action="submit-add-match" data-round-id="${roundId}">${iconCheck(13)} add match</button>
+      <button class="btn-ghost-sm" data-action="cancel-add-match">${iconX(13)} cancel</button>
+    </div>
+  </div>`;
+}
+function renderTransferPanel(){
+  const dotColor = syncState==='synced' ? 'var(--turf)' : syncState==='checking' ? 'var(--gold)' : (syncState==='error' ? 'var(--miss)' : 'var(--ink-dim)');
+  const label = syncState==='synced' ? 'synced via github'
+    : syncState==='checking' ? 'connecting\u2026'
+    : syncState==='error' ? 'github sync error \u2014 check token, see hint below'
+    : 'not connected \u2014 saving on this device only';
+  return `
+  <div class="sync-panel">
+    <div class="sync-status" id="sync-status-row"><span class="sync-dot" style="background:${dotColor}"></span><span>${label}</span></div>
+    ${ghToken ? `
+      <div class="form-actions">
+        <button class="btn-ghost-sm" data-action="disconnect-github">disconnect github</button>
+      </div>
+    ` : uiOpen.connectingGithub ? `
+      <div class="inline-form">
+        <input id="gh-token-input" type="password" placeholder="paste your github token here" class="text-input" aria-label="github personal access token" autocomplete="off" />
+        <div class="form-actions">
+          <button class="btn-primary-sm" data-action="submit-github-token">connect</button>
+          <button class="btn-ghost-sm" data-action="cancel-github">cancel</button>
+        </div>
+        <div class="sync-hint">on github.com: settings &rarr; developer settings &rarr; personal access tokens &rarr; tokens (classic) &rarr; generate new token &rarr; check only the "gist" box &rarr; generate. paste the code it gives you above. this stays on your device and is only ever sent to github's api.</div>
+      </div>
+    ` : `
+      <div class="form-actions">
+        <button class="btn-primary-sm" data-action="toggle-github-connect">${iconCheck(13)} connect github (real sync)</button>
+      </div>
+      <div class="sync-hint">connects to a private gist on your own github account so every device with the same account sees the same data automatically. or skip it and use copy/paste below.</div>
+    `}
+    <div class="hr-dash" style="margin-top:4px;"></div>
+    <div class="form-actions">
+      <button class="btn-ghost-sm" id="export-btn" data-action="export-data">${iconCheck(13)} copy data</button>
+      <button class="btn-ghost-sm" data-action="toggle-import">${uiOpen.importing ? 'cancel' : 'paste data from other device'}</button>
+    </div>
+    ${uiOpen.importing ? `
+      <div class="inline-form">
+        <textarea id="import-input" class="text-input" rows="3" placeholder="paste the copied data here" aria-label="data to import"></textarea>
+        <div class="form-actions">
+          <button class="btn-primary-sm" data-action="submit-import">${iconCheck(13)} load data</button>
+          <button class="btn-ghost-sm" data-action="cancel-import">${iconX(13)} cancel</button>
+        </div>
+      </div>
+    ` : ''}
+  </div>`;
+}
+
+// ---- master render ----
+function render(){
+  const root = document.getElementById('app');
+  const activeRoundData = state.rounds.find(r => r.id === state.activeRound) || state.rounds[0];
+  const standings = computeStandings(state.rounds);
+  const progress = activeRoundData ? roundProgress(activeRoundData) : { total:0, graded:0 };
+
+  root.innerHTML = `
+    <div class="wrap">
+      <header>
+        <div class="eyebrow">fifa world cup 2026 &middot; ai prediction league</div>
+        <h1 class="title">WHO CALLS IT BEST?</h1>
+        <p class="subtitle">sonnet, opus, fable &amp; haiku get the same prompt and the same matches. exact score = 3, right team advances = 1, wrong = 0.</p>
+      </header>
+
+      ${renderTransferPanel()}
+
+      <div class="tabs">
+        ${state.rounds.map(r => `<button class="tab ${r.id===state.activeRound?'active':''}" data-action="set-round" data-round-id="${r.id}">${escapeHtml(r.name)}</button>`).join('')}
+        ${uiOpen.addingRound ? renderAddRoundForm() : `<button class="tab-add" data-action="toggle-add-round" aria-label="add round">${iconPlus(15)}</button>`}
+      </div>
+      ${activeRoundData ? `
+      <div class="round-tools">
+        <button class="reset-link" data-action="rename-round" data-round-id="${activeRoundData.id}">rename this round</button>
+        ${state.rounds.length > 1 ? `<button class="reset-link" data-action="toggle-delete-round" data-round-id="${activeRoundData.id}">delete this round</button>` : ''}
+      </div>
+      ${uiOpen.deletingRound === activeRoundData.id ? `<div class="reset-confirm" style="margin-bottom:16px;"><span>delete "${escapeHtml(activeRoundData.name)}" and all its matches?</span><button class="btn-danger-sm" data-action="confirm-delete-round" data-round-id="${activeRoundData.id}">yes, delete</button><button class="btn-ghost-sm" data-action="cancel-delete-round">cancel</button></div>` : ''}
+      ` : ''}
+
+      <div class="section">
+        <div class="center-circle" aria-hidden="true"></div>
+        <div class="section-label">standings</div>
+        <div class="board">${standings.map((m,i) => renderLeaderboardCard(m, i+1)).join('')}</div>
+      </div>
+
+      <div class="section-label">${escapeHtml(activeRoundData ? activeRoundData.name : 'matches')} ${activeRoundData && activeRoundData.matches.length ? `<span class="progress-note">&middot; ${progress.graded}/${progress.total} graded</span>` : ''}</div>
+      <div class="matches">
+        ${activeRoundData && activeRoundData.matches.length
+          ? activeRoundData.matches.map(m => renderMatchCard(m, activeRoundData.id)).join('')
+          : `<div class="empty">no matches yet &mdash; add one below.</div>`}
+      </div>
+
+      <div class="add-match-wrap">
+        ${uiOpen.addingMatch ? renderAddMatchForm(activeRoundData.id) : `<button class="add-match-btn" data-action="toggle-add-match">${iconPlus(14)} add match</button>`}
+      </div>
+
+      <div class="footer">
+        ${uiOpen.resetConfirm
+          ? `<div class="reset-confirm"><span>clear all data on this device?</span><button class="btn-danger-sm" data-action="confirm-reset">yes, reset</button><button class="btn-ghost-sm" data-action="cancel-reset">cancel</button></div>`
+          : `<button class="reset-link" data-action="toggle-reset">reset all data</button>`}
+      </div>
+    </div>
+  `;
+}
+
+// ---- state mutators ----
+function setActiveRound(id){ state.activeRound = id; saveState(); render(); }
+function setActual(matchId, value){
+  state.rounds = state.rounds.map(r => ({ ...r, matches: r.matches.map(m => m.id===matchId ? { ...m, actual: value } : m) }));
+  saveState(); render();
+}
+function setPrediction(matchId, modelId, value){
+  state.rounds = state.rounds.map(r => ({ ...r, matches: r.matches.map(m => m.id===matchId ? { ...m, predictions: { ...m.predictions, [modelId]: value } } : m) }));
+  saveState(); render();
+}
+function submitAddRound(){
+  const name = val('add-round-input');
+  if (!name) return;
+  const id = `${name.toLowerCase().replace(/[^a-z0-9]+/g,'-')}-${Date.now()}`;
+  state.rounds.push({ id, name, matches: [] });
+  state.activeRound = id;
+  uiOpen.addingRound = false;
+  saveState(); render();
+}
+function submitAddMatch(roundId){
+  const aName = val('am-a-name'), aCode = val('am-a-code').toUpperCase().slice(0,3);
+  const bName = val('am-b-name'), bCode = val('am-b-code').toUpperCase().slice(0,3);
+  const aIso = val('am-a-iso').toLowerCase(), bIso = val('am-b-iso').toLowerCase();
+  const venue = val('am-venue'), kickoff = val('am-kickoff');
+  if (!aName || !aCode || !bName || !bCode) return;
+  state.customFlags = state.customFlags || {};
+  if (aIso) state.customFlags[aCode] = aIso;
+  if (bIso) state.customFlags[bCode] = bIso;
+  const id = `${aCode}-${bCode}-${Date.now()}`;
+  const round = state.rounds.find(r => r.id === roundId);
+  round.matches.push({ id, teamA:{ name:aName, code:aCode }, teamB:{ name:bName, code:bCode }, venue, kickoff, actual:null, predictions:{} });
+  uiOpen.addingMatch = false;
+  saveState(); render();
+}
+function deleteMatch(roundId, matchId){
+  const round = state.rounds.find(r => r.id === roundId);
+  if (!round) return;
+  round.matches = round.matches.filter(m => m.id !== matchId);
+  saveState(); render();
+}
+function deleteRound(roundId){
+  if (state.rounds.length <= 1) return; // always keep at least one round
+  state.rounds = state.rounds.filter(r => r.id !== roundId);
+  if (state.activeRound === roundId) state.activeRound = state.rounds[0].id;
+  uiOpen.deletingRound = null;
+  saveState(); render();
+}
+function renameRound(roundId, newName){
+  const round = state.rounds.find(r => r.id === roundId);
+  if (!round || !newName) return;
+  round.name = newName;
+  saveState(); render();
+}
+function doReset(){
+  state = JSON.parse(JSON.stringify(defaultState));
+  uiOpen = { addingRound:false, addingMatch:false, resetConfirm:false, formOpen:null, importing:false, connectingGithub:false, deletingRound:null };
+  saveState(); render();
+}
+function submitScoreForm(kind, matchId, modelId){
+  const aEl = document.getElementById('sf-a'), bEl = document.getElementById('sf-b');
+  if (!aEl || !bEl) return;
+  const a = aEl.value, b = bEl.value;
+  if (a === '' || b === '') {
+    [aEl, bEl].forEach(el => { if (el.value === '') { el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); } });
+    return;
+  }
+  const isDraw = Number(a) === Number(b);
+  let advancer;
+  if (isDraw) {
+    const pkRow = document.getElementById('sf-pk');
+    const sel = pkRow ? pkRow.dataset.selected : '';
+    if (!sel) { if (pkRow) { pkRow.classList.remove('shake'); void pkRow.offsetWidth; pkRow.classList.add('shake'); } return; }
+    advancer = sel;
+  } else {
+    advancer = Number(a) > Number(b) ? 'A' : 'B';
+  }
+  const value = { scoreA:Number(a), scoreB:Number(b), advancer };
+  uiOpen.formOpen = null;
+  if (kind === 'actual') setActual(matchId, value);
+  else setPrediction(matchId, modelId, value);
+}
+function renderSyncStatusOnly(){
+  const row = document.getElementById('sync-status-row');
+  if (!row) return;
+  const dotColor = syncState==='synced' ? 'var(--turf)' : syncState==='checking' ? 'var(--gold)' : (syncState==='error' ? 'var(--miss)' : 'var(--ink-dim)');
+  const label = syncState==='synced' ? 'synced via github'
+    : syncState==='checking' ? 'connecting\u2026'
+    : syncState==='error' ? 'github sync error \u2014 check token, see hint below'
+    : 'not connected \u2014 saving on this device only';
+  row.innerHTML = `<span class="sync-dot" style="background:${dotColor}"></span><span>${label}</span>`;
+}
+
+// ---- github gist sync ----
+async function ghRequest(path, options){
+  const res = await fetch(`${GH_API}${path}`, {
+    ...options,
+    headers: {
+      'Authorization': `token ${ghToken}`,
+      'Accept': 'application/vnd.github+json',
+      ...(options && options.body ? { 'Content-Type': 'application/json' } : {}),
+      ...(options && options.headers ? options.headers : {}),
+    },
+  });
+  return res;
+}
+async function connectGithub(){
+  const token = val('gh-token-input');
+  if (!token) return;
+  ghToken = token;
+  syncState = 'checking'; uiOpen.connectingGithub = false; render();
+  try {
+    // look for an existing gist we created before (covers "second device, same account")
+    const listRes = await ghRequest('/gists', {});
+    if (!listRes.ok) throw new Error('bad token');
+    const gists = await listRes.json();
+    const existing = gists.find(g => g.description === GIST_MARKER);
+    if (existing) {
+      gistId = existing.id;
+      await pullFromGist(false);
+    } else {
+      const createRes = await ghRequest('/gists', {
+        method: 'POST',
+        body: JSON.stringify({ description: GIST_MARKER, public: false, files: { [GIST_FILENAME]: { content: JSON.stringify(state) } } }),
+      });
+      if (!createRes.ok) throw new Error('create failed');
+      const created = await createRes.json();
+      gistId = created.id;
+    }
+    localStorage.setItem(GH_TOKEN_KEY, ghToken);
+    localStorage.setItem(GH_GIST_KEY, gistId);
+    syncState = 'synced';
+  } catch (e) {
+    syncState = 'error';
+  }
+  render();
+}
+async function pushToGist(){
+  if (!ghToken || !gistId) return;
+  syncState = 'checking'; renderSyncStatusOnly();
+  try {
+    const res = await ghRequest(`/gists/${gistId}`, {
+      method: 'PATCH',
+      body: JSON.stringify({ files: { [GIST_FILENAME]: { content: JSON.stringify(state) } } }),
+    });
+    syncState = res.ok ? 'synced' : 'error';
+  } catch (e) {
+    syncState = 'error';
+  }
+  renderSyncStatusOnly();
+}
+async function pullFromGist(fullRenderAfter){
+  if (!ghToken || !gistId) return;
+  syncState = 'checking'; renderSyncStatusOnly();
+  try {
+    const res = await ghRequest(`/gists/${gistId}`, {});
+    if (res.ok) {
+      const gist = await res.json();
+      const content = gist.files && gist.files[GIST_FILENAME] && gist.files[GIST_FILENAME].content;
+      if (content) {
+        const remote = JSON.parse(content);
+        if (remote && Array.isArray(remote.rounds)) { state = remote; saveLocalOnly(); }
+      }
+      syncState = 'synced';
+    } else {
+      syncState = 'error';
+    }
+  } catch (e) {
+    syncState = 'error';
+  }
+  if (fullRenderAfter) render(); else renderSyncStatusOnly();
+}
+function disconnectGithub(){
+  ghToken = ''; gistId = '';
+  localStorage.removeItem(GH_TOKEN_KEY);
+  localStorage.removeItem(GH_GIST_KEY);
+  syncState = 'off';
+  render();
+}
+
+// ---- data transfer (manual copy/paste fallback — always available, no dependencies) ----
+function exportData(){
+  return JSON.stringify(state);
+}
+function submitImport(){
+  const raw = val('import-input');
+  if (!raw) return;
+  try {
+    const parsed = JSON.parse(raw);
+    if (!parsed || !Array.isArray(parsed.rounds)) throw new Error('missing rounds');
+    state = parsed;
+    uiOpen.importing = false;
+    saveState();
+    render();
+  } catch (e) {
+    const ta = document.getElementById('import-input');
+    if (ta) { ta.classList.remove('shake'); void ta.offsetWidth; ta.classList.add('shake'); }
+  }
+}
+
+// ---- delegated events ----
+function onAppClick(e){
+  const pk = e.target.closest('[data-pk-side]');
+  if (pk) {
+    const row = document.getElementById('sf-pk');
+    const side = pk.dataset.pkSide;
+    row.dataset.selected = side;
+    row.querySelectorAll('.pk-btn').forEach(b => b.classList.toggle('selected', b.dataset.pkSide === side));
+    return;
+  }
+  const t = e.target.closest('[data-action]');
+  if (!t) return;
+  const action = t.dataset.action;
+  if (action === 'set-round') setActiveRound(t.dataset.roundId);
+  else if (action === 'toggle-add-round') { uiOpen.addingRound = true; render(); }
+  else if (action === 'cancel-add-round') { uiOpen.addingRound = false; render(); }
+  else if (action === 'submit-add-round') submitAddRound();
+  else if (action === 'toggle-add-match') { uiOpen.addingMatch = true; render(); }
+  else if (action === 'cancel-add-match') { uiOpen.addingMatch = false; render(); }
+  else if (action === 'submit-add-match') submitAddMatch(t.dataset.roundId);
+  else if (action === 'edit-actual') { uiOpen.formOpen = { kind:'actual', matchId:t.dataset.matchId, modelId:null }; render(); }
+  else if (action === 'edit-prediction') { uiOpen.formOpen = { kind:'prediction', matchId:t.dataset.matchId, modelId:t.dataset.modelId }; render(); }
+  else if (action === 'save-score') submitScoreForm(t.dataset.kind, t.dataset.matchId, t.dataset.modelId || null);
+  else if (action === 'cancel-score') { uiOpen.formOpen = null; render(); }
+  else if (action === 'toggle-reset') { uiOpen.resetConfirm = true; render(); }
+  else if (action === 'cancel-reset') { uiOpen.resetConfirm = false; render(); }
+  else if (action === 'confirm-reset') doReset();
+  else if (action === 'export-data') {
+    copyText(exportData()).then(() => { t.innerHTML = `${iconCheck(13)} copied!`; setTimeout(() => { t.innerHTML = `${iconCheck(13)} copy data`; }, 1500); }).catch(() => { t.innerHTML = `${iconX(13)} couldn't copy`; setTimeout(() => { t.innerHTML = `${iconCheck(13)} copy data`; }, 1500); });
+  }
+  else if (action === 'toggle-import') { uiOpen.importing = !uiOpen.importing; render(); }
+  else if (action === 'cancel-import') { uiOpen.importing = false; render(); }
+  else if (action === 'submit-import') submitImport();
+  else if (action === 'toggle-github-connect') { uiOpen.connectingGithub = true; render(); }
+  else if (action === 'cancel-github') { uiOpen.connectingGithub = false; render(); }
+  else if (action === 'submit-github-token') connectGithub();
+  else if (action === 'disconnect-github') disconnectGithub();
+  else if (action === 'delete-match') {
+    if (confirm('remove this match?')) deleteMatch(t.dataset.roundId, t.dataset.matchId);
+  }
+  else if (action === 'toggle-delete-round') { uiOpen.deletingRound = uiOpen.deletingRound === t.dataset.roundId ? null : t.dataset.roundId; render(); }
+  else if (action === 'confirm-delete-round') deleteRound(t.dataset.roundId);
+  else if (action === 'cancel-delete-round') { uiOpen.deletingRound = null; render(); }
+  else if (action === 'rename-round') {
+    const round = state.rounds.find(r => r.id === t.dataset.roundId);
+    const next = prompt('rename round to:', round ? round.name : '');
+    if (next && next.trim()) renameRound(t.dataset.roundId, next.trim());
+  }
+}
+function onAppInput(e){
+  if (e.target.id === 'sf-a' || e.target.id === 'sf-b') {
+    const aEl = document.getElementById('sf-a'), bEl = document.getElementById('sf-b');
+    const pkRow = document.getElementById('sf-pk');
+    if (!pkRow || !aEl || !bEl) return;
+    const a = aEl.value, b = bEl.value;
+    const isDraw = a !== '' && b !== '' && Number(a) === Number(b);
+    pkRow.style.display = isDraw ? 'flex' : 'none';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const app = document.getElementById('app');
+  app.addEventListener('click', onAppClick);
+  app.addEventListener('input', onAppInput);
+  render(); // instant paint from local data — never blocked by network
+  if (ghToken && gistId) pullFromGist(true);
+});
+</script>
+</body>
+</html>
