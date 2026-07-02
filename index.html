@@ -190,12 +190,42 @@ const TEAM_COLORS = {
 };
 
 const initialMatches = [
-  { id:'esp-aut', teamA:{code:'ESP',name:'Spain'}, teamB:{code:'AUT',name:'Austria'}, venue:'Los Angeles', kickoff:'Jul 2 · 3:00pm ET', actual:null, predictions:{} },
-  { id:'por-cro', teamA:{code:'POR',name:'Portugal'}, teamB:{code:'CRO',name:'Croatia'}, venue:'Toronto', kickoff:'Jul 2 · 7:00pm ET', actual:null, predictions:{} },
-  { id:'sui-dza', teamA:{code:'SUI',name:'Switzerland'}, teamB:{code:'DZA',name:'Algeria'}, venue:'Vancouver', kickoff:'Jul 2 · 11:00pm ET', actual:null, predictions:{} },
-  { id:'aus-egy', teamA:{code:'AUS',name:'Australia'}, teamB:{code:'EGY',name:'Egypt'}, venue:'Arlington', kickoff:'Jul 3 · 2:00pm ET', actual:null, predictions:{} },
-  { id:'arg-cpv', teamA:{code:'ARG',name:'Argentina'}, teamB:{code:'CPV',name:'Cape Verde'}, venue:'Miami Gardens', kickoff:'Jul 3 · 6:00pm ET', actual:null, predictions:{} },
-  { id:'col-gha', teamA:{code:'COL',name:'Colombia'}, teamB:{code:'GHA',name:'Ghana'}, venue:'Kansas City', kickoff:'Jul 3 · 9:30pm ET', actual:null, predictions:{} },
+  { id:'esp-aut', teamA:{code:'ESP',name:'Spain'}, teamB:{code:'AUT',name:'Austria'}, venue:'Los Angeles', kickoff:'Jul 2 · 3:00pm ET', actual:null, predictions:{
+    fable:  {scoreA:2, scoreB:0, advancer:'A'},
+    opus:   {scoreA:2, scoreB:0, advancer:'A'},
+    sonnet: {scoreA:3, scoreB:1, advancer:'A'},
+    haiku:  {scoreA:2, scoreB:0, advancer:'A'},
+  }},
+  { id:'por-cro', teamA:{code:'POR',name:'Portugal'}, teamB:{code:'CRO',name:'Croatia'}, venue:'Toronto', kickoff:'Jul 2 · 7:00pm ET', actual:null, predictions:{
+    fable:  {scoreA:2, scoreB:1, advancer:'A'},
+    opus:   {scoreA:2, scoreB:1, advancer:'A'},
+    sonnet: {scoreA:2, scoreB:1, advancer:'A'},
+    haiku:  {scoreA:1, scoreB:1, advancer:'B'},
+  }},
+  { id:'sui-dza', teamA:{code:'SUI',name:'Switzerland'}, teamB:{code:'DZA',name:'Algeria'}, venue:'Vancouver', kickoff:'Jul 2 · 11:00pm ET', actual:null, predictions:{
+    fable:  {scoreA:2, scoreB:1, advancer:'A'},
+    opus:   {scoreA:2, scoreB:1, advancer:'A'},
+    sonnet: {scoreA:3, scoreB:2, advancer:'A'},
+    haiku:  {scoreA:2, scoreB:1, advancer:'A'},
+  }},
+  { id:'aus-egy', teamA:{code:'AUS',name:'Australia'}, teamB:{code:'EGY',name:'Egypt'}, venue:'Arlington', kickoff:'Jul 3 · 2:00pm ET', actual:null, predictions:{
+    fable:  {scoreA:1, scoreB:1, advancer:'B'},
+    opus:   {scoreA:0, scoreB:1, advancer:'B'},
+    sonnet: {scoreA:1, scoreB:1, advancer:'B'},
+    haiku:  {scoreA:1, scoreB:1, advancer:'A'},
+  }},
+  { id:'arg-cpv', teamA:{code:'ARG',name:'Argentina'}, teamB:{code:'CPV',name:'Cape Verde'}, venue:'Miami Gardens', kickoff:'Jul 3 · 6:00pm ET', actual:null, predictions:{
+    fable:  {scoreA:3, scoreB:0, advancer:'A'},
+    opus:   {scoreA:3, scoreB:0, advancer:'A'},
+    sonnet: {scoreA:4, scoreB:0, advancer:'A'},
+    haiku:  {scoreA:3, scoreB:0, advancer:'A'},
+  }},
+  { id:'col-gha', teamA:{code:'COL',name:'Colombia'}, teamB:{code:'GHA',name:'Ghana'}, venue:'Kansas City', kickoff:'Jul 3 · 9:30pm ET', actual:null, predictions:{
+    fable:  {scoreA:2, scoreB:0, advancer:'A'},
+    opus:   {scoreA:1, scoreB:0, advancer:'A'},
+    sonnet: {scoreA:2, scoreB:0, advancer:'A'},
+    haiku:  {scoreA:1, scoreB:0, advancer:'A'},
+  }},
 ];
 
 const defaultState = {
