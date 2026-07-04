@@ -190,7 +190,7 @@ const TEAM_COLORS = {
 };
 
 const initialMatches = [
-  { id:'esp-aut', teamA:{code:'ESP',name:'Spain'}, teamB:{code:'AUT',name:'Austria'}, venue:'Los Angeles', kickoff:'Jul 2 · 3:00pm ET', actual:null, predictions:{
+  { id:'esp-aut', teamA:{code:'ESP',name:'Spain'}, teamB:{code:'AUT',name:'Austria'}, venue:'Los Angeles', kickoff:'Jul 2 · 3:00pm ET', actual:{scoreA:3, scoreB:0, advancer:'A'}, predictions:{
     fable:  {scoreA:2, scoreB:0, advancer:'A'},
     opus:   {scoreA:2, scoreB:0, advancer:'A'},
     sonnet: {scoreA:3, scoreB:1, advancer:'A'},
@@ -208,7 +208,7 @@ const initialMatches = [
     sonnet: {scoreA:3, scoreB:2, advancer:'A'},
     haiku:  {scoreA:2, scoreB:1, advancer:'A'},
   }},
-  { id:'aus-egy', teamA:{code:'AUS',name:'Australia'}, teamB:{code:'EGY',name:'Egypt'}, venue:'Arlington', kickoff:'Jul 3 · 2:00pm ET', actual:null, predictions:{
+  { id:'aus-egy', teamA:{code:'AUS',name:'Australia'}, teamB:{code:'EGY',name:'Egypt'}, venue:'Arlington', kickoff:'Jul 3 · 2:00pm ET', actual:{scoreA:1, scoreB:1, advancer:'B'}, predictions:{
     fable:  {scoreA:1, scoreB:1, advancer:'B'},
     opus:   {scoreA:0, scoreB:1, advancer:'B'},
     sonnet: {scoreA:1, scoreB:1, advancer:'B'},
@@ -264,7 +264,7 @@ function saveState(){
 // ---- scoring ----
 function computePoints(pred, actual) {
   if (!pred || !actual) return null;
-  if (pred.scoreA === actual.scoreA && pred.scoreB === actual.scoreB) return 3;
+  if (pred.scoreA === actual.scoreA && pred.scoreB === actual.scoreB && pred.advancer === actual.advancer) return 3;
   if (pred.advancer === actual.advancer) return 1;
   return 0;
 }
