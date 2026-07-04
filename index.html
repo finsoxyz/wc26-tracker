@@ -81,6 +81,29 @@
   .s-exact{color:var(--turf);font-weight:700;}
   .s-adv{color:var(--gold);font-weight:700;}
   .s-miss{color:var(--miss);font-weight:700;}
+  .margin-stat{font-size:12px;color:var(--ink-dim);}
+  .margin-stat span{color:var(--ink);font-weight:600;}
+  .form-dots{display:flex;gap:4px;}
+  .form-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .form-label{font-size:11px;color:var(--ink-dim);opacity:0.8;}
+  .form-dot{width:9px;height:9px;border-radius:50%;display:inline-block;}
+  .still-backing{font-size:12px;color:var(--ink-dim);display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
+  .still-backing.sb-empty{opacity:0.6;}
+  .sb-label{opacity:0.75;}
+  .sb-tag{background:var(--surface-2);border:1px solid var(--line-strong);border-radius:5px;padding:1px 6px;font-family:'Teko',sans-serif;font-size:12px;font-weight:600;color:var(--ink);}
+  .round-breakdown{display:flex;flex-direction:column;gap:2px;padding-top:4px;border-top:1px solid var(--line);margin-top:2px;}
+  .rb-row{display:flex;justify-content:space-between;font-size:12px;color:var(--ink-dim);}
+  .rb-row span:last-child{color:var(--ink);font-weight:600;}
+  .progress-bar-track{background:var(--surface-2);border-radius:999px;height:6px;overflow:hidden;margin-top:6px;}
+  .progress-bar-fill{background:var(--turf);height:100%;border-radius:999px;}
+  .thread-badge{font-size:11px;font-weight:700;color:var(--gold);background:rgba(217,180,74,0.12);border:1px solid var(--gold);border-radius:999px;padding:2px 8px;white-space:nowrap;}
+  .match-tag{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;border-radius:999px;padding:2px 8px;white-space:nowrap;}
+  .match-tag.upcoming{color:var(--ink-dim);border:1px solid var(--line-strong);}
+  .match-tag.live{color:#0A1310;background:var(--miss);}
+  .match-tag.final{color:var(--ink-dim);}
+  .match-tags-row{display:flex;align-items:center;gap:6px;justify-content:center;margin-bottom:6px;flex-wrap:wrap;}
+  .fill-from-row{display:flex;flex-direction:column;gap:4px;}
+  .fill-from-row select{padding:8px;border-radius:6px;background:var(--bg);color:var(--ink);border:1px solid var(--line-strong);font-size:13px;}
 
   .matches{display:flex;flex-direction:column;gap:12px;}
   .match-card{position:relative;overflow:hidden;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;}
@@ -190,37 +213,37 @@ const TEAM_COLORS = {
 };
 
 const initialMatches = [
-  { id:'esp-aut', teamA:{code:'ESP',name:'Spain'}, teamB:{code:'AUT',name:'Austria'}, venue:'Los Angeles', kickoff:'Jul 2 · 3:00pm ET', actual:{scoreA:3, scoreB:0, advancer:'A'}, predictions:{
+  { id:'esp-aut', teamA:{code:'ESP',name:'Spain'}, teamB:{code:'AUT',name:'Austria'}, venue:'Los Angeles', kickoffAt:'2026-07-02T19:00:00Z', actual:{scoreA:3, scoreB:0, advancer:'A'}, gradedAt:1, predictions:{
     fable:  {scoreA:2, scoreB:0, advancer:'A'},
     opus:   {scoreA:2, scoreB:0, advancer:'A'},
     sonnet: {scoreA:3, scoreB:1, advancer:'A'},
     haiku:  {scoreA:2, scoreB:0, advancer:'A'},
   }},
-  { id:'por-cro', teamA:{code:'POR',name:'Portugal'}, teamB:{code:'CRO',name:'Croatia'}, venue:'Toronto', kickoff:'Jul 2 · 7:00pm ET', actual:null, predictions:{
+  { id:'por-cro', teamA:{code:'POR',name:'Portugal'}, teamB:{code:'CRO',name:'Croatia'}, venue:'Toronto', kickoffAt:'2026-07-02T23:00:00Z', actual:{scoreA:2, scoreB:1, advancer:'A'}, gradedAt:2, predictions:{
     fable:  {scoreA:2, scoreB:1, advancer:'A'},
     opus:   {scoreA:2, scoreB:1, advancer:'A'},
     sonnet: {scoreA:2, scoreB:1, advancer:'A'},
     haiku:  {scoreA:1, scoreB:1, advancer:'B'},
   }},
-  { id:'sui-dza', teamA:{code:'SUI',name:'Switzerland'}, teamB:{code:'DZA',name:'Algeria'}, venue:'Vancouver', kickoff:'Jul 2 · 11:00pm ET', actual:null, predictions:{
+  { id:'sui-dza', teamA:{code:'SUI',name:'Switzerland'}, teamB:{code:'DZA',name:'Algeria'}, venue:'Vancouver', kickoffAt:'2026-07-03T03:00:00Z', actual:{scoreA:2, scoreB:0, advancer:'A'}, gradedAt:3, predictions:{
     fable:  {scoreA:2, scoreB:1, advancer:'A'},
     opus:   {scoreA:2, scoreB:1, advancer:'A'},
     sonnet: {scoreA:3, scoreB:2, advancer:'A'},
     haiku:  {scoreA:2, scoreB:1, advancer:'A'},
   }},
-  { id:'aus-egy', teamA:{code:'AUS',name:'Australia'}, teamB:{code:'EGY',name:'Egypt'}, venue:'Arlington', kickoff:'Jul 3 · 2:00pm ET', actual:{scoreA:1, scoreB:1, advancer:'B'}, predictions:{
+  { id:'aus-egy', teamA:{code:'AUS',name:'Australia'}, teamB:{code:'EGY',name:'Egypt'}, venue:'Arlington', kickoffAt:'2026-07-03T18:00:00Z', actual:{scoreA:1, scoreB:1, advancer:'B'}, gradedAt:4, predictions:{
     fable:  {scoreA:1, scoreB:1, advancer:'B'},
     opus:   {scoreA:0, scoreB:1, advancer:'B'},
     sonnet: {scoreA:1, scoreB:1, advancer:'B'},
     haiku:  {scoreA:1, scoreB:1, advancer:'A'},
   }},
-  { id:'arg-cpv', teamA:{code:'ARG',name:'Argentina'}, teamB:{code:'CPV',name:'Cape Verde'}, venue:'Miami Gardens', kickoff:'Jul 3 · 6:00pm ET', actual:null, predictions:{
+  { id:'arg-cpv', teamA:{code:'ARG',name:'Argentina'}, teamB:{code:'CPV',name:'Cape Verde'}, venue:'Miami Gardens', kickoffAt:'2026-07-03T22:00:00Z', actual:{scoreA:3, scoreB:2, advancer:'A'}, gradedAt:5, predictions:{
     fable:  {scoreA:3, scoreB:0, advancer:'A'},
     opus:   {scoreA:3, scoreB:0, advancer:'A'},
     sonnet: {scoreA:4, scoreB:0, advancer:'A'},
     haiku:  {scoreA:3, scoreB:0, advancer:'A'},
   }},
-  { id:'col-gha', teamA:{code:'COL',name:'Colombia'}, teamB:{code:'GHA',name:'Ghana'}, venue:'Kansas City', kickoff:'Jul 3 · 9:30pm ET', actual:null, predictions:{
+  { id:'col-gha', teamA:{code:'COL',name:'Colombia'}, teamB:{code:'GHA',name:'Ghana'}, venue:'Kansas City', kickoffAt:'2026-07-04T01:30:00Z', actual:{scoreA:1, scoreB:0, advancer:'A'}, gradedAt:6, predictions:{
     fable:  {scoreA:2, scoreB:0, advancer:'A'},
     opus:   {scoreA:1, scoreB:0, advancer:'A'},
     sonnet: {scoreA:2, scoreB:0, advancer:'A'},
@@ -228,9 +251,18 @@ const initialMatches = [
   }},
 ];
 
+const ro16Matches = [
+  { id:'por-esp', teamA:{code:'POR',name:'Portugal'}, teamB:{code:'ESP',name:'Spain'}, venue:'Arlington', kickoffAt:'2026-07-06T19:00:00Z', actual:null, predictions:{} },
+  { id:'arg-egy', teamA:{code:'ARG',name:'Argentina'}, teamB:{code:'EGY',name:'Egypt'}, venue:'Atlanta', kickoffAt:'2026-07-07T16:00:00Z', actual:null, predictions:{} },
+  { id:'sui-col', teamA:{code:'SUI',name:'Switzerland'}, teamB:{code:'COL',name:'Colombia'}, venue:'Vancouver', kickoffAt:'2026-07-07T20:00:00Z', actual:null, predictions:{} },
+];
+
 const defaultState = {
-  activeRound: 'ro32',
-  rounds: [{ id:'ro32', name:'Round of 32', matches: initialMatches }],
+  activeRound: 'ro16',
+  rounds: [
+    { id:'ro32', name:'Round of 32', matches: initialMatches },
+    { id:'ro16', name:'Round of 16', matches: ro16Matches },
+  ],
   customFlags: {},
 };
 
@@ -241,10 +273,21 @@ const GIST_MARKER = 'wc26-prediction-league-data (auto-managed by tracker — do
 const GIST_FILENAME = 'wc26-data.json';
 
 let state = loadLocalState();
-let uiOpen = { addingRound:false, addingMatch:false, resetConfirm:false, formOpen:null, importing:false, connectingGithub:false, deletingRound:null };
+let uiOpen = { addingRound:false, addingMatch:false, resetConfirm:false, formOpen:null, importing:false, connectingGithub:false, deletingRound:null, expandedModel:null };
 let ghToken = localStorage.getItem(GH_TOKEN_KEY) || '';
 let gistId = localStorage.getItem(GH_GIST_KEY) || '';
 let syncState = ghToken ? 'checking' : 'off'; // off | checking | synced | error
+let lastSyncAt = null;
+function timeAgo(ts){
+  if (!ts) return '';
+  const s = Math.floor((Date.now() - ts) / 1000);
+  if (s < 10) return 'just now';
+  if (s < 60) return `${s}s ago`;
+  const m = Math.floor(s / 60);
+  if (m < 60) return `${m}m ago`;
+  const h = Math.floor(m / 60);
+  return `${h}h ago`;
+}
 
 function loadLocalState(){
   try {
@@ -283,6 +326,18 @@ function formatScoreLabel(entry, match) {
   }
   return base;
 }
+function goalDiff(scoreA, scoreB){ return scoreA - scoreB; }
+function computeMarginOfError(modelId, rounds){
+  let sum = 0, counted = 0;
+  rounds.forEach(r => r.matches.forEach(m => {
+    const pred = m.predictions[modelId];
+    if (pred && m.actual) {
+      sum += Math.abs(goalDiff(pred.scoreA, pred.scoreB) - goalDiff(m.actual.scoreA, m.actual.scoreB));
+      counted++;
+    }
+  }));
+  return counted ? sum : null; // null = no graded matches yet, keeps it out of tiebreak comparisons
+}
 function computeStandings(rounds) {
   const totals = {};
   MODELS.forEach((m) => (totals[m.id] = { points:0, exact:0, advancer:0, miss:0, pending:0 }));
@@ -298,12 +353,102 @@ function computeStandings(rounds) {
       });
     });
   });
-  return MODELS.map((m) => ({ ...m, ...totals[m.id] })).sort((a, b) => b.points - a.points);
+  return MODELS.map((m) => ({ ...m, ...totals[m.id], margin: computeMarginOfError(m.id, rounds) }))
+    .sort((a, b) => {
+      if (b.points !== a.points) return b.points - a.points;
+      if (b.exact !== a.exact) return b.exact - a.exact;
+      const am = a.margin === null ? Infinity : a.margin, bm = b.margin === null ? Infinity : b.margin;
+      return am - bm; // lower margin of error wins the tiebreak
+    });
+}
+function computeFormStreak(modelId, rounds, n){
+  const results = [];
+  rounds.forEach(r => r.matches.forEach(m => {
+    const pts = computePoints(m.predictions[modelId], m.actual);
+    if (pts !== null) results.push(pts);
+  }));
+  return results.slice(-n);
+}
+function teamsEliminated(rounds){
+  const eliminated = new Set();
+  rounds.forEach(r => r.matches.forEach(m => {
+    if (m.actual) eliminated.add(m.actual.advancer === 'A' ? m.teamB.code : m.teamA.code);
+  }));
+  return eliminated;
+}
+function modelStillBacking(modelId, rounds){
+  const eliminated = teamsEliminated(rounds);
+  const picks = new Map();
+  rounds.forEach(r => r.matches.forEach(m => {
+    const pred = m.predictions[modelId];
+    if (!pred) return;
+    const team = pred.advancer === 'A' ? m.teamA : m.teamB;
+    if (eliminated.has(team.code)) picks.delete(team.code);
+    else picks.set(team.code, team);
+  }));
+  return Array.from(picks.values());
+}
+function computeRoundBreakdown(modelId, rounds){
+  return rounds.map(r => {
+    let pts = 0;
+    r.matches.forEach(m => {
+      const p = computePoints(m.predictions[modelId], m.actual);
+      if (p) pts += p;
+    });
+    return { roundName: r.name, points: pts };
+  });
+}
+function isThreadWorthy(match){
+  if (!match.actual) return false;
+  const advancers = new Set();
+  const predictedGDs = [];
+  MODELS.forEach(model => {
+    const pred = match.predictions[model.id];
+    if (pred) {
+      advancers.add(pred.advancer);
+      predictedGDs.push(Math.abs(goalDiff(pred.scoreA, pred.scoreB)));
+    }
+  });
+  const wasDraw = match.actual.scoreA === match.actual.scoreB;
+  const actualGD = Math.abs(goalDiff(match.actual.scoreA, match.actual.scoreB));
+  const minPredictedGD = predictedGDs.length ? Math.min(...predictedGDs) : null;
+  // every model expected a comfortable margin, but it was a nailbiter — a near-upset the models missed
+  const closerThanExpected = minPredictedGD !== null && actualGD <= 1 && minPredictedGD >= 2 && (minPredictedGD - actualGD) >= 2;
+  return advancers.size > 1 || wasDraw || closerThanExpected;
+}
+function overallProgress(rounds){
+  let total = 0, graded = 0;
+  rounds.forEach(r => { total += r.matches.length; graded += r.matches.filter(m => m.actual).length; });
+  return { total, graded };
 }
 function roundProgress(round){
   const total = round.matches.length;
   const graded = round.matches.filter(m => m.actual).length;
   return { total, graded };
+}
+function matchStatus(match){
+  if (match.actual) return 'final';
+  if (!match.kickoffAt) return 'upcoming';
+  const t = new Date(match.kickoffAt).getTime();
+  if (isNaN(t)) return 'upcoming';
+  return Date.now() >= t ? 'live' : 'upcoming';
+}
+function formatKickoff(iso){
+  if (!iso) return '';
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return '';
+  try {
+    return d.toLocaleString(undefined, { month:'short', day:'numeric', hour:'numeric', minute:'2-digit', timeZoneName:'short' });
+  } catch (e) {
+    return d.toString();
+  }
+}
+function toDatetimeLocalValue(iso){
+  if (!iso) return '';
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return '';
+  const pad = n => String(n).padStart(2,'0');
+  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
 function escapeHtml(str){
   return String(str == null ? '' : str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -381,8 +526,27 @@ function renderScoreForm(kind, matchId, modelId, teamA, teamB, initial, accent){
     </div>
   </div>`;
 }
-function renderLeaderboardCard(model, rank){
+function renderFormDots(streak){
+  if (!streak.length) return '';
+  const color = p => p === 3 ? 'var(--turf)' : p === 1 ? 'var(--gold)' : 'var(--miss)';
+  return `<div class="form-row" aria-label="recent form, oldest to newest">
+    <span class="form-label">form (oldest &rarr; newest)</span>
+    <div class="form-dots">${streak.map(p => `<span class="form-dot" style="background:${color(p)}"></span>`).join('')}</div>
+  </div>`;
+}
+function renderStillBacking(teams){
+  if (!teams.length) return `<div class="still-backing sb-empty">none of its picks are still alive in the tournament</div>`;
+  return `<div class="still-backing"><span class="sb-label">correctly called, still alive:</span>${teams.map(t => `<span class="sb-tag">${escapeHtml(t.code)}</span>`).join('')}</div>`;
+}
+function renderRoundBreakdown(modelId, rounds){
+  const breakdown = computeRoundBreakdown(modelId, rounds);
+  return `<div class="round-breakdown">${breakdown.map(b => `<div class="rb-row"><span>${escapeHtml(b.roundName)}</span><span>${b.points}pts</span></div>`).join('')}</div>`;
+}
+function renderLeaderboardCard(model, rank, rounds){
   const isTop = rank === 1;
+  const expanded = uiOpen.expandedModel === model.id;
+  const streak = computeFormStreak(model.id, rounds, 5);
+  const backing = modelStillBacking(model.id, rounds);
   return `
   <div class="lb-card ${isTop?'top':''}">
     <div class="corner-arc tl ${isTop?'gold':''}"></div>
@@ -398,6 +562,11 @@ function renderLeaderboardCard(model, rank){
       <span><span class="s-miss">${model.miss}</span> miss</span>
       ${model.pending>0?`<span>${model.pending} pending</span>`:''}
     </div>
+    ${model.margin !== null ? `<div class="margin-stat">margin of error: <span>${model.margin}</span></div>` : ''}
+    ${renderFormDots(streak)}
+    ${renderStillBacking(backing)}
+    <button class="reset-link" style="padding:2px 0;text-align:left;" data-action="toggle-model-details" data-model-id="${model.id}">${expanded ? 'hide' : 'show'} round-by-round</button>
+    ${expanded ? renderRoundBreakdown(model.id, rounds) : ''}
   </div>`;
 }
 function renderPredictionRow(model, match){
@@ -423,10 +592,17 @@ function renderPredictionRow(model, match){
 function renderMatchCard(match, roundId){
   const f = uiOpen.formOpen;
   const isEditingActual = f && f.kind==='actual' && f.matchId===match.id;
+  const status = matchStatus(match);
+  const threadWorthy = isThreadWorthy(match);
+  const kickoffLabel = formatKickoff(match.kickoffAt);
   return `
   <div class="match-card">
     <div class="corner-arc tl"></div>
     <div class="corner-arc br"></div>
+    <div class="match-tags-row">
+      <span class="match-tag ${status}" data-round-id="${roundId}" data-match-id="${match.id}">${status}</span>
+      ${threadWorthy ? `<span class="thread-badge">🧵 worth a thread?</span>` : ''}
+    </div>
     <div class="match-head">
       <div class="team">${renderFlag(match.teamA.code)}${renderTeamText(match.teamA,'left')}</div>
       ${isEditingActual
@@ -435,11 +611,12 @@ function renderMatchCard(match, roundId){
       <div class="team right">${renderTeamText(match.teamB,'right')}${renderFlag(match.teamB.code)}</div>
     </div>
     <div class="match-meta-row">
-      <span class="match-meta">${escapeHtml(match.venue||'')}${match.venue&&match.kickoff?' &middot; ':''}${escapeHtml(match.kickoff||'')}</span>
+      <span class="match-meta">${escapeHtml(match.venue||'')}${match.venue&&kickoffLabel?' &middot; ':''}${escapeHtml(kickoffLabel)}</span>
       <button class="edit-btn" data-action="delete-match" data-round-id="${roundId}" data-match-id="${match.id}" aria-label="delete match">${iconX(12)}</button>
     </div>
     <div class="hr-dash"></div>
     <div class="pred-list">${MODELS.map(model => renderPredictionRow(model, match)).join('')}</div>
+    ${match.actual ? `<button class="btn-ghost-sm" style="margin-top:10px;" data-action="generate-tweet" data-round-id="${roundId}" data-match-id="${match.id}">${iconCheck(13)} copy tweet template</button>` : ''}
   </div>`;
 }
 function renderAddRoundForm(){
@@ -449,8 +626,28 @@ function renderAddRoundForm(){
     <button class="btn-ghost-sm" data-action="cancel-add-round">cancel</button>
   </div>`;
 }
+function gradedWinnerOptions(){
+  const opts = [];
+  state.rounds.forEach(r => r.matches.forEach(m => {
+    if (m.actual) {
+      const winner = m.actual.advancer === 'A' ? m.teamA : m.teamB;
+      opts.push({ label: `${winner.name} (won ${m.teamA.code} v ${m.teamB.code}, ${r.name})`, code: winner.code, name: winner.name });
+    }
+  }));
+  return opts;
+}
 function renderAddMatchForm(roundId){
+  const winners = gradedWinnerOptions();
+  const winnerSelect = (id) => winners.length ? `
+    <select id="${id}" aria-label="fill team from a previous match's winner">
+      <option value="">fill from a previous winner (optional)</option>
+      ${winners.map(w => `<option value="${escapeHtml(w.code)}||${escapeHtml(w.name)}">${escapeHtml(w.label)}</option>`).join('')}
+    </select>` : '';
   return `<div class="inline-form">
+    <div class="fill-from-row">
+      ${winnerSelect('fill-a-select')}
+      ${winnerSelect('fill-b-select')}
+    </div>
     <div class="match-form-grid">
       <input id="am-a-name" type="text" placeholder="Team A name" class="text-input" aria-label="team A name" />
       <input id="am-a-code" type="text" placeholder="Code (e.g. ESP)" class="text-input" maxlength="3" aria-label="team A code" />
@@ -459,8 +656,9 @@ function renderAddMatchForm(roundId){
       <input id="am-b-code" type="text" placeholder="Code (e.g. AUT)" class="text-input" maxlength="3" aria-label="team B code" />
       <input id="am-b-iso" type="text" placeholder="Flag code (iso2, e.g. at) optional" class="text-input" maxlength="2" aria-label="team B flag iso code" />
       <input id="am-venue" type="text" placeholder="Venue (optional)" class="text-input" aria-label="venue" />
-      <input id="am-kickoff" type="text" placeholder="Kickoff (optional)" class="text-input" aria-label="kickoff time" />
+      <input id="am-kickoff" type="datetime-local" class="text-input" aria-label="kickoff date and time, in your own local time" />
     </div>
+    <div class="sync-hint" style="margin-top:-2px;">enter kickoff in your own local time &mdash; the tag switches from "upcoming" to "live" on its own once that time passes, and to "final" once you enter a score.</div>
     <div class="form-actions">
       <button class="btn-primary-sm" data-action="submit-add-match" data-round-id="${roundId}">${iconCheck(13)} add match</button>
       <button class="btn-ghost-sm" data-action="cancel-add-match">${iconX(13)} cancel</button>
@@ -469,7 +667,7 @@ function renderAddMatchForm(roundId){
 }
 function renderTransferPanel(){
   const dotColor = syncState==='synced' ? 'var(--turf)' : syncState==='checking' ? 'var(--gold)' : (syncState==='error' ? 'var(--miss)' : 'var(--ink-dim)');
-  const label = syncState==='synced' ? 'synced via github'
+  const label = syncState==='synced' ? `synced via github${lastSyncAt ? ' · ' + timeAgo(lastSyncAt) : ''}`
     : syncState==='checking' ? 'connecting\u2026'
     : syncState==='error' ? 'github sync error \u2014 check token, see hint below'
     : 'not connected \u2014 saving on this device only';
@@ -518,6 +716,9 @@ function render(){
   const activeRoundData = state.rounds.find(r => r.id === state.activeRound) || state.rounds[0];
   const standings = computeStandings(state.rounds);
   const progress = activeRoundData ? roundProgress(activeRoundData) : { total:0, graded:0 };
+  const overall = overallProgress(state.rounds);
+  const overallPct = overall.total ? Math.round((overall.graded / overall.total) * 100) : 0;
+  const hasBackups = (() => { try { return JSON.parse(localStorage.getItem(BACKUP_KEY) || '[]').length > 0; } catch(e){ return false; } })();
 
   root.innerHTML = `
     <div class="wrap">
@@ -525,6 +726,8 @@ function render(){
         <div class="eyebrow">fifa world cup 2026 &middot; ai prediction league</div>
         <h1 class="title">WHO CALLS IT BEST?</h1>
         <p class="subtitle">sonnet, opus, fable &amp; haiku get the same prompt and the same matches. exact score = 3, right team advances = 1, wrong = 0.</p>
+        <div class="progress-note" style="margin-bottom:6px;">tournament progress &middot; ${overall.graded}/${overall.total} matches graded</div>
+        <div class="progress-bar-track"><div class="progress-bar-fill" style="width:${overallPct}%"></div></div>
       </header>
 
       ${renderTransferPanel()}
@@ -544,7 +747,7 @@ function render(){
       <div class="section">
         <div class="center-circle" aria-hidden="true"></div>
         <div class="section-label">standings</div>
-        <div class="board">${standings.map((m,i) => renderLeaderboardCard(m, i+1)).join('')}</div>
+        <div class="board">${standings.map((m,i) => renderLeaderboardCard(m, i+1, state.rounds)).join('')}</div>
       </div>
 
       <div class="section-label">${escapeHtml(activeRoundData ? activeRoundData.name : 'matches')} ${activeRoundData && activeRoundData.matches.length ? `<span class="progress-note">&middot; ${progress.graded}/${progress.total} graded</span>` : ''}</div>
@@ -558,10 +761,11 @@ function render(){
         ${uiOpen.addingMatch ? renderAddMatchForm(activeRoundData.id) : `<button class="add-match-btn" data-action="toggle-add-match">${iconPlus(14)} add match</button>`}
       </div>
 
-      <div class="footer">
+      <div class="footer" style="flex-direction:column;gap:8px;">
         ${uiOpen.resetConfirm
           ? `<div class="reset-confirm"><span>clear all data on this device?</span><button class="btn-danger-sm" data-action="confirm-reset">yes, reset</button><button class="btn-ghost-sm" data-action="cancel-reset">cancel</button></div>`
           : `<button class="reset-link" data-action="toggle-reset">reset all data</button>`}
+        ${hasBackups ? `<button class="reset-link" data-action="restore-backup">restore last backup (undo reset/import)</button>` : ''}
       </div>
     </div>
   `;
@@ -570,7 +774,7 @@ function render(){
 // ---- state mutators ----
 function setActiveRound(id){ state.activeRound = id; saveState(); render(); }
 function setActual(matchId, value){
-  state.rounds = state.rounds.map(r => ({ ...r, matches: r.matches.map(m => m.id===matchId ? { ...m, actual: value } : m) }));
+  state.rounds = state.rounds.map(r => ({ ...r, matches: r.matches.map(m => m.id===matchId ? { ...m, actual: value, gradedAt: m.gradedAt || Date.now() } : m) }));
   saveState(); render();
 }
 function setPrediction(matchId, modelId, value){
@@ -590,14 +794,16 @@ function submitAddMatch(roundId){
   const aName = val('am-a-name'), aCode = val('am-a-code').toUpperCase().slice(0,3);
   const bName = val('am-b-name'), bCode = val('am-b-code').toUpperCase().slice(0,3);
   const aIso = val('am-a-iso').toLowerCase(), bIso = val('am-b-iso').toLowerCase();
-  const venue = val('am-venue'), kickoff = val('am-kickoff');
+  const venue = val('am-venue'), kickoffRaw = val('am-kickoff');
   if (!aName || !aCode || !bName || !bCode) return;
   state.customFlags = state.customFlags || {};
   if (aIso) state.customFlags[aCode] = aIso;
   if (bIso) state.customFlags[bCode] = bIso;
   const id = `${aCode}-${bCode}-${Date.now()}`;
+  const kickoffDate = kickoffRaw ? new Date(kickoffRaw) : null;
+  const kickoffAt = kickoffDate && !isNaN(kickoffDate.getTime()) ? kickoffDate.toISOString() : null;
   const round = state.rounds.find(r => r.id === roundId);
-  round.matches.push({ id, teamA:{ name:aName, code:aCode }, teamB:{ name:bName, code:bCode }, venue, kickoff, actual:null, predictions:{} });
+  round.matches.push({ id, teamA:{ name:aName, code:aCode }, teamB:{ name:bName, code:bCode }, venue, kickoffAt, actual:null, predictions:{} });
   uiOpen.addingMatch = false;
   saveState(); render();
 }
@@ -620,9 +826,55 @@ function renameRound(roundId, newName){
   round.name = newName;
   saveState(); render();
 }
+function generateTweet(roundId, matchId, btn){
+  const round = state.rounds.find(r => r.id === roundId);
+  const match = round && round.matches.find(m => m.id === matchId);
+  if (!match || !match.actual) return;
+  const header = `FT · [flag] ${match.actual.scoreA}-${match.actual.scoreB} [flag] · [one-liner here]`;
+  const cutoff = match.gradedAt || 0;
+  const priorOnly = state.rounds.map(r => ({ ...r, matches: r.matches.filter(m => m.actual && (m.gradedAt || 0) < cutoff) }));
+  const before = computeStandings(priorOnly);
+  const beforeMap = {}; before.forEach(m => beforeMap[m.id] = m.points);
+  const rows = MODELS.map(model => {
+    const pred = match.predictions[model.id];
+    const pts = computePoints(pred, match.actual);
+    const label = pred ? formatScoreLabel(pred, match) : '—';
+    const chip = pts === 3 ? '🎯' : pts === 1 ? '✅' : pts === 0 ? '❌' : '—';
+    const before_ = beforeMap[model.id] || 0;
+    const after_ = before_ + (pts || 0);
+    return `${model.id} | ${label} | ${chip} | +${pts || 0} -> ${after_}pts`;
+  }).join('\n');
+  const legend = `( 🎯 exact score = 3pts | ✅ correct team = 1pt | ❌ wrong = 0 )`;
+  const tweet = `${header}\n\n${rows}\n\n${legend}`;
+  copyText(tweet).then(() => {
+    if (btn) { const orig = btn.innerHTML; btn.textContent = 'copied!'; setTimeout(() => { btn.innerHTML = orig; }, 1500); }
+  }).catch(() => {});
+}
+const BACKUP_KEY = 'wc26-backups';
+function saveBackupSnapshot(){
+  try {
+    const raw = localStorage.getItem(BACKUP_KEY);
+    const backups = raw ? JSON.parse(raw) : [];
+    backups.push({ at: Date.now(), state });
+    while (backups.length > 3) backups.shift();
+    localStorage.setItem(BACKUP_KEY, JSON.stringify(backups));
+  } catch (e) { console.error('backup save failed', e); }
+}
+function restoreLastBackup(){
+  try {
+    const raw = localStorage.getItem(BACKUP_KEY);
+    const backups = raw ? JSON.parse(raw) : [];
+    if (!backups.length) return;
+    const last = backups.pop();
+    state = last.state;
+    localStorage.setItem(BACKUP_KEY, JSON.stringify(backups));
+    saveState(); render();
+  } catch (e) { console.error('backup restore failed', e); }
+}
 function doReset(){
+  saveBackupSnapshot();
   state = JSON.parse(JSON.stringify(defaultState));
-  uiOpen = { addingRound:false, addingMatch:false, resetConfirm:false, formOpen:null, importing:false, connectingGithub:false, deletingRound:null };
+  uiOpen = { addingRound:false, addingMatch:false, resetConfirm:false, formOpen:null, importing:false, connectingGithub:false, deletingRound:null, expandedModel:null };
   saveState(); render();
 }
 function submitScoreForm(kind, matchId, modelId){
@@ -652,7 +904,7 @@ function renderSyncStatusOnly(){
   const row = document.getElementById('sync-status-row');
   if (!row) return;
   const dotColor = syncState==='synced' ? 'var(--turf)' : syncState==='checking' ? 'var(--gold)' : (syncState==='error' ? 'var(--miss)' : 'var(--ink-dim)');
-  const label = syncState==='synced' ? 'synced via github'
+  const label = syncState==='synced' ? `synced via github${lastSyncAt ? ' · ' + timeAgo(lastSyncAt) : ''}`
     : syncState==='checking' ? 'connecting\u2026'
     : syncState==='error' ? 'github sync error \u2014 check token, see hint below'
     : 'not connected \u2014 saving on this device only';
@@ -697,7 +949,7 @@ async function connectGithub(){
     }
     localStorage.setItem(GH_TOKEN_KEY, ghToken);
     localStorage.setItem(GH_GIST_KEY, gistId);
-    syncState = 'synced';
+    syncState = 'synced'; lastSyncAt = Date.now();
   } catch (e) {
     syncState = 'error';
   }
@@ -712,6 +964,7 @@ async function pushToGist(){
       body: JSON.stringify({ files: { [GIST_FILENAME]: { content: JSON.stringify(state) } } }),
     });
     syncState = res.ok ? 'synced' : 'error';
+    if (res.ok) lastSyncAt = Date.now();
   } catch (e) {
     syncState = 'error';
   }
@@ -729,7 +982,7 @@ async function pullFromGist(fullRenderAfter){
         const remote = JSON.parse(content);
         if (remote && Array.isArray(remote.rounds)) { state = remote; saveLocalOnly(); }
       }
-      syncState = 'synced';
+      syncState = 'synced'; lastSyncAt = Date.now();
     } else {
       syncState = 'error';
     }
@@ -756,6 +1009,7 @@ function submitImport(){
   try {
     const parsed = JSON.parse(raw);
     if (!parsed || !Array.isArray(parsed.rounds)) throw new Error('missing rounds');
+    saveBackupSnapshot();
     state = parsed;
     uiOpen.importing = false;
     saveState();
@@ -814,6 +1068,21 @@ function onAppClick(e){
     const next = prompt('rename round to:', round ? round.name : '');
     if (next && next.trim()) renameRound(t.dataset.roundId, next.trim());
   }
+  else if (action === 'toggle-model-details') { uiOpen.expandedModel = uiOpen.expandedModel === t.dataset.modelId ? null : t.dataset.modelId; render(); }
+  else if (action === 'generate-tweet') generateTweet(t.dataset.roundId, t.dataset.matchId, t);
+  else if (action === 'restore-backup') restoreLastBackup();
+}
+function onFillFromChange(e){
+  if (e.target.id === 'fill-a-select' || e.target.id === 'fill-b-select') {
+    const sel = e.target;
+    const side = sel.id === 'fill-a-select' ? 'a' : 'b';
+    if (!sel.value) return;
+    const [code, name] = sel.value.split('||');
+    const nameEl = document.getElementById(`am-${side}-name`);
+    const codeEl = document.getElementById(`am-${side}-code`);
+    if (nameEl) nameEl.value = name;
+    if (codeEl) codeEl.value = code;
+  }
 }
 function onAppInput(e){
   if (e.target.id === 'sf-a' || e.target.id === 'sf-b') {
@@ -826,12 +1095,24 @@ function onAppInput(e){
   }
 }
 
+function refreshMatchStatuses(){
+  document.querySelectorAll('.match-tag[data-match-id]').forEach(tagEl => {
+    const round = state.rounds.find(r => r.id === tagEl.dataset.roundId);
+    const match = round && round.matches.find(m => m.id === tagEl.dataset.matchId);
+    if (!match) return;
+    const status = matchStatus(match);
+    tagEl.textContent = status;
+    tagEl.className = `match-tag ${status}`;
+  });
+}
 document.addEventListener('DOMContentLoaded', () => {
   const app = document.getElementById('app');
   app.addEventListener('click', onAppClick);
   app.addEventListener('input', onAppInput);
+  app.addEventListener('change', onFillFromChange);
   render(); // instant paint from local data — never blocked by network
   if (ghToken && gistId) pullFromGist(true);
+  setInterval(refreshMatchStatuses, 30000);
 });
 </script>
 </body>
