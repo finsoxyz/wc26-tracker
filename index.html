@@ -204,12 +204,20 @@ const MODELS = [
 const FLAG_ISO = {
   ESP:'es', AUT:'at', POR:'pt', CRO:'hr', SUI:'ch', DZA:'dz',
   AUS:'au', EGY:'eg', ARG:'ar', CPV:'cv', COL:'co', GHA:'gh',
+  ENG:'gb-eng', SCO:'gb-sct', WAL:'gb-wls', FRA:'fr', BRA:'br',
+  GER:'de', NED:'nl', BEL:'be', URU:'uy', MEX:'mx', USA:'us',
+  CAN:'ca', MAR:'ma', NOR:'no', SEN:'sn', JPN:'jp', KOR:'kr',
+  PRY:'py', URU:'uy', TUN:'tn',
 };
 
 const TEAM_COLORS = {
   ESP:'#C60B1E', AUT:'#ED2939', POR:'#046A38', CRO:'#E01B22',
   SUI:'#D52B1E', DZA:'#006233', AUS:'#00843D', EGY:'#CE1126',
   ARG:'#75AADB', CPV:'#003893', COL:'#FCD116', GHA:'#CE1126',
+  ENG:'#CF081F', FRA:'#003189', BRA:'#009C3B', GER:'#000000',
+  NED:'#FF6600', BEL:'#000000', MEX:'#006847', USA:'#002868',
+  CAN:'#FF0000', MAR:'#C1272D', NOR:'#EF2B2D', SEN:'#00853F',
+  JPN:'#BC002D', PRY:'#0038A8',
 };
 
 const initialMatches = [
@@ -651,10 +659,10 @@ function renderAddMatchForm(roundId){
     <div class="match-form-grid">
       <input id="am-a-name" type="text" placeholder="Team A name" class="text-input" aria-label="team A name" />
       <input id="am-a-code" type="text" placeholder="Code (e.g. ESP)" class="text-input" maxlength="3" aria-label="team A code" />
-      <input id="am-a-iso" type="text" placeholder="Flag code (iso2, e.g. es) optional" class="text-input" maxlength="2" aria-label="team A flag iso code" />
+      <input id="am-a-iso" type="text" placeholder="Flag code (e.g. es, gb-eng) optional" class="text-input" maxlength="6" aria-label="team A flag iso code" />
       <input id="am-b-name" type="text" placeholder="Team B name" class="text-input" aria-label="team B name" />
       <input id="am-b-code" type="text" placeholder="Code (e.g. AUT)" class="text-input" maxlength="3" aria-label="team B code" />
-      <input id="am-b-iso" type="text" placeholder="Flag code (iso2, e.g. at) optional" class="text-input" maxlength="2" aria-label="team B flag iso code" />
+      <input id="am-b-iso" type="text" placeholder="Flag code (e.g. es, gb-eng) optional" class="text-input" maxlength="6" aria-label="team B flag iso code" />
       <input id="am-venue" type="text" placeholder="Venue (optional)" class="text-input" aria-label="venue" />
       <input id="am-kickoff" type="datetime-local" class="text-input" aria-label="kickoff date and time, in your own local time" />
     </div>
